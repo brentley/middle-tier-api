@@ -1,0 +1,42 @@
+environments:
+  - name: acceptance
+  - name: production
+    cluster:
+      keyName: macbook
+    provider: ecs-fargate
+service:
+  name: middle-tier-api
+  desiredCount: 9
+  port: 80
+  pathPatterns:
+  - /*
+  healthEndpoint: /
+  networkMode: awsvpc   
+  deploymentConfiguration:
+    minimumHealthyPercent: 100
+    maximumPercent: 200
+  pipeline:
+    source:
+      repo: brentley/middle-tier-api
+    build:
+      disabled: false
+    acceptance:
+      disabled: false
+      environment: production
+    production:
+      disabled: true
+  database:
+    name: middletierapi
+  environment:
+    DB_USER: ${DatabaseMasterUsername}
+    DB_PASSWORD: ${DatabaseMasterPassword}
+    DB_HOST: ${DatabaseEndpointAddress}:${DatabaseEndpointPort}
+    DB_NAME: ${DatabaseName}
+templates:
+  mu-service-middle-tier-api-production:
+    Resources:
+      EcsService:
+        Properties:
+          DeploymentConfiguration:
+            MaximumPercent: 200
+            MinimumHealthyPercent: 100

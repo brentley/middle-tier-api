@@ -1,9 +1,11 @@
-#!/bin/bash -x
+#!/bin/bash 
+
+set -x
 
 IP=$(ip route show |grep -o src.* |cut -f2 -d" ")
 
-echo -n "My IP is: " > /usr/share/nginx/html/index.html
-echo ${IP} >>/usr/share/nginx/html/index.html
+/bin/echo -n "My IP is: " > /usr/share/nginx/html/index.html
+/bin/echo ${IP} >>/usr/share/nginx/html/index.html
 
-nginx -g 'daemon off;'
+/usr/sbin/nginx -g 'daemon off;'
 
