@@ -6,7 +6,7 @@ environments:
     provider: ecs-fargate
 service:
   name: middle-tier-api
-  desiredCount: 9
+  desiredCount: 3
   port: 80
   pathPatterns:
   - /*
